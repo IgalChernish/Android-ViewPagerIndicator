@@ -1,0 +1,93 @@
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion 21
+    buildToolsVersion "22.0.1"
+
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+
+    buildTypes {
+        modular {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+        }
+
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/MANIFEST.MF'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    publishNonDefault true
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        credentials{
+            username 'applicasterapps'
+            password '078882fe17e5198e329a9b3a3d0d7714e68aa2b0'
+        }
+        url 'https://dl.bintray.com/applicaster-ltd/maven'
+    }
+}
+
+dependencies {
+    debugCompile project( path:':applicaster-android-sdk', configuration:'debug' )
+    modularCompile project( path:':applicaster-android-sdk', configuration:'modular' )
+    releaseCompile ('com.applicaster:applicaster-android-sdk:2.3.+')
+
+
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+    }
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
+    }
+}
