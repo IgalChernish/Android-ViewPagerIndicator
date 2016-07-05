@@ -1,13 +1,15 @@
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 
-
 android {
-    compileSdkVersion 16
-    buildToolsVersion "22.0.0"
+
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 19
+        minSdkVersion 15
+        targetSdkVersion 23
     }
 
     sourceSets {
@@ -20,6 +22,19 @@ android {
         }
     }
 
+    buildTypes {
+        modular {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+        }
+
+    }
+
     packagingOptions {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -27,11 +42,48 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/MANIFEST.MF'
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    publishNonDefault true
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        credentials{
+            username 'applicasterapps'
+            password '078882fe17e5198e329a9b3a3d0d7714e68aa2b0'
+        }
+        url 'https://dl.bintray.com/applicaster-ltd/maven'
+    }
 }
 
 dependencies {
+    debugCompile project( path:':applicaster-android-sdk', configuration:'debug' )
+    modularCompile project( path:':applicaster-android-sdk', configuration:'modular' )
+    releaseCompile ('com.applicaster:applicaster-android-sdk:2.6.0')
+}
 
-    provided  fileTree(dir: 'libs', include: '**/*.jar' )
-    provided  fileTree(dir: 'optlibs', include: '**/*.jar' )
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+    }
+}
 
+//SDK Manager
+buildscript {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath 'com.github.JakeWharton:sdk-manager-plugin:1d29782dd6ffa18880c8cbada748fb3dea45e7be'
+    }
 }
